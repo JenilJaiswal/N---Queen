@@ -112,3 +112,38 @@ body {
 
 
 /* ----------------------------- */
+
+.solve-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.solve-button:hover {
+  background-color: darkred;
+}
+
+.grid-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #4a5568;
+  background-color: #2d3748;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.grid-cell:hover {
+  background-color: #3182ce;
+  transform: scale(1.05);
+}

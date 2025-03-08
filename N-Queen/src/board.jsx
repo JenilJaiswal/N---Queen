@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css"; // Using App.css for styling
+import "./App.css";
 
 export default function Board() {
   const [size, setSize] = useState("");
@@ -18,13 +18,12 @@ export default function Board() {
 
     const newSize = value === "" ? "" : parseInt(value, 10);
 
-    // Only allow values between 1 and 20
     if (newSize >= 1 && newSize <= 20) {
       setSize(newSize);
       generateGrid(newSize);
     } else {
-      setSize(""); // Reset size if out of range
-      setGrid([]); // Clear the grid if invalid input
+      setSize(""); 
+      setGrid([]);
     }
   };
 
@@ -33,13 +32,47 @@ export default function Board() {
       setGrid([]);
       return;
     }
-    setGrid(Array(size * size).fill("")); // Initialize empty grid
+    setGrid(Array(size * size).fill(""));
   };
 
-  const handleCellClick = (index) => {
-    setGrid((prevGrid) =>
-      prevGrid.map((cell, i) => (i === index ? (cell === "👑" ? "" : "👑") : cell))
-    );
+  const solveNQueens = () => {
+    const board = Array(size).fill(-1);
+    const result = [];
+
+    const isSafe = (row, col) => {
+      for (let prevRow = 0; prevRow < row; prevRow++) {
+        const prevCol = board[prevRow];
+        if (prevCol === col || Math.abs(prevCol - col) === Math.abs(prevRow - row)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const placeQueens = (row) => {
+      if (row === size) {
+        result.push([...board]);
+        return;
+      }
+      for (let col = 0; col < size; col++) {
+        if (isSafe(row, col)) {
+          board[row] = col;
+          placeQueens(row + 1);
+          board[row] = -1; 
+        }
+      }
+    };
+
+    placeQueens(0);
+
+    if (result.length > 0) {
+      const solution = result[0]; // Take the first valid solution
+      const newGrid = Array(size * size).fill("");
+      solution.forEach((col, row) => {
+        newGrid[row * size + col] = "♛";
+      });
+      setGrid(newGrid);
+    }
   };
 
   return (
@@ -60,16 +93,15 @@ export default function Board() {
             gridTemplateRows: `repeat(${size || 1}, 50px)`,
           }}
         >
-          {grid.map((cell, index) => (
-            <div
-              key={index}
-              className="grid-cell"
-              onClick={() => handleCellClick(index)}
-            >
-              {cell}
+          {grid.map((value, index) => (
+            <div key={index} className="grid-cell">
+              {value}
             </div>
           ))}
         </div>
+        <button onClick={solveNQueens} className="solve-button">
+          Solve
+        </button>
       </div>
     </div>
   );
