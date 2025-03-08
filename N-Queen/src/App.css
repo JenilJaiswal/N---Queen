@@ -1,0 +1,95 @@
+/* Full page styling with background */
+body {
+  background: url("../assets/image/chess.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container to center board */
+.board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Board styling */
+.board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* User Input Box */
+.input-box {
+  border: 2px solid transparent;
+  padding: 0.75rem;
+  border-radius: 6px;
+  width: 14rem;
+  text-align: center;
+  font-size: 1.2rem;
+  outline: none;
+  background-color: #edf2f7;
+  transition: all 0.3s ease-in-out;
+}
+
+.input-box:focus {
+  border-color: #ffcc00;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}
+
+/* Grid Styling */
+.grid {
+  display: grid;
+  gap: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Grid Cell Styling */
+.grid-cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #ffcc00;
+  background-color: #2d3748;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.2s;
+  border-radius: 8px;
+}
+
+.grid-cell:hover {
+  background-color: #3182ce;
+  transform: scale(1.1);
+}
+
+.grid-cell:focus {
+  background-color: #ffcc00;
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
