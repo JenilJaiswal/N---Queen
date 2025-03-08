@@ -18,8 +18,8 @@ export default function Board() {
 
     const newSize = value === "" ? "" : parseInt(value, 10);
 
-    // Only allow values between 1 and 99
-    if (newSize >= 1 && newSize <= 99) {
+    // Only allow values between 1 and 20
+    if (newSize >= 1 && newSize <= 20) {
       setSize(newSize);
       generateGrid(newSize);
     } else {
@@ -52,7 +52,7 @@ export default function Board() {
           type="text"
           value={size}
           onChange={handleChange}
-          placeholder="Enter grid size (1-99)"
+          placeholder="Enter Board size"
           className="input-box"
           maxLength="2" // Prevents typing more than 2 characters
         />
