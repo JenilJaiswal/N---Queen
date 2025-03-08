@@ -11,7 +11,7 @@ export default function Board() {
     // Ensure only numbers are entered
     if (!/^\d*$/.test(value)) return;
 
-    // Restrict input to two-digit numbers (1-99)
+    // Restrict input to two-digit numbers (1-20)
     if (value.length > 2) {
       value = value.slice(0, 2);
     }
@@ -33,16 +33,13 @@ export default function Board() {
       setGrid([]);
       return;
     }
-    setGrid(Array.from({ length: size * size }, () => ""));
+    setGrid(Array(size * size).fill("")); // Initialize empty grid
   };
 
-  const handleInputChange = (index, value) => {
-    // Ensure only a single digit (0-9) is entered
-    if (/^\d?$/.test(value)) {
-      const newGrid = [...grid];
-      newGrid[index] = value;
-      setGrid(newGrid);
-    }
+  const handleCellClick = (index) => {
+    setGrid((prevGrid) =>
+      prevGrid.map((cell, i) => (i === index ? (cell === "👑" ? "" : "👑") : cell))
+    );
   };
 
   return (
@@ -54,7 +51,7 @@ export default function Board() {
           onChange={handleChange}
           placeholder="Enter Board size"
           className="input-box"
-          maxLength="2" // Prevents typing more than 2 characters
+          maxLength="2"
         />
         <div
           className="grid"
@@ -63,15 +60,14 @@ export default function Board() {
             gridTemplateRows: `repeat(${size || 1}, 50px)`,
           }}
         >
-          {grid.map((value, index) => (
-            <input
+          {grid.map((cell, index) => (
+            <div
               key={index}
-              type="text"
-              value={value}
-              onChange={(e) => handleInputChange(index, e.target.value)}
               className="grid-cell"
-              maxLength="1" // Ensures only 1 character is typed
-            />
+              onClick={() => handleCellClick(index)}
+            >
+              {cell}
+            </div>
           ))}
         </div>
       </div>

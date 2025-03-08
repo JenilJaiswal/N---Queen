@@ -37,7 +37,8 @@ body {
   padding: 2rem;
   background: rgba(0, 0, 0, 0.8);
   /* background: rgba(59, 2, 2, 0.7); */
-  border-radius: 12px;
+  border-radius: 16px;
+  border: #2d3748 solid 2px;;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -49,7 +50,9 @@ body {
   border-radius: 6px;
   width: 14rem;
   text-align: center;
-  font-size: 1.2rem;
+  /* font-size: 2 rem; */
+  font-size: x-large;
+  font-weight: 700;
   outline: none;
   background-color: #ffffff;
   transition: all 0.3s ease-in-out;
@@ -63,7 +66,7 @@ body {
 /* Grid Styling */
 .grid {
   display: grid;
-  gap: 5px;
+  gap: 10px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -72,12 +75,15 @@ body {
   width: 50px;
   height: 50px;
   border: 2px solid #ffcc00;
+  /* background-color: #4a3333; */
   background-color: #2d3748;
   color: white;
-  font-size: 1.2rem;
+  font-size: 2rem;
+  /* color: #e40707; */
   text-align: center;
   transition: background-color 0.3s, transform 0.2s;
   border-radius: 8px;
+  /* padding: 10px 10px 10px 10px; */
 }
 
 .grid-cell:hover {
@@ -103,3 +109,6 @@ body {
     transform: scale(1);
   }
 }
+
+
+/* ----------------------------- */
