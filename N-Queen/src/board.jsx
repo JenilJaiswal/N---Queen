@@ -3,36 +3,28 @@ import "./App.css";
 
 export default function Board() {
   const [size, setSize] = useState("");
-  const [grid, setGrid] = useState([]);
+  const [solutions, setSolutions] = useState([]);
+  const [currentSolutionIndex, setCurrentSolutionIndex] = useState(0);
+  const [gridGenerated, setGridGenerated] = useState(false);
+  const [solved, setSolved] = useState(false); // New state to track if solve was clicked
 
   const handleChange = (e) => {
     let value = e.target.value;
-
-    // Ensure only numbers are entered
     if (!/^\d*$/.test(value)) return;
-
-    // Restrict input to two-digit numbers (1-20)
-    if (value.length > 2) {
-      value = value.slice(0, 2);
-    }
-
+    if (value.length > 2) value = value.slice(0, 2);
     const newSize = value === "" ? "" : parseInt(value, 10);
 
-    if (newSize >= 1 && newSize <= 20) {
+    if (newSize >= 1 && newSize <= 10) {
       setSize(newSize);
-      generateGrid(newSize);
+      setGridGenerated(true);
+      setSolutions([]);
+      setSolved(false); // Reset solved state when changing board size
     } else {
-      setSize(""); 
-      setGrid([]);
+      setSize("");
+      setSolutions([]);
+      setGridGenerated(false);
+      setSolved(false);
     }
-  };
-
-  const generateGrid = (size) => {
-    if (!size) {
-      setGrid([]);
-      return;
-    }
-    setGrid(Array(size * size).fill(""));
   };
 
   const solveNQueens = () => {
@@ -58,21 +50,24 @@ export default function Board() {
         if (isSafe(row, col)) {
           board[row] = col;
           placeQueens(row + 1);
-          board[row] = -1; 
+          board[row] = -1;
         }
       }
     };
 
     placeQueens(0);
+    setSolutions(result.length > 0 ? result : []);
+    setCurrentSolutionIndex(0);
+    setGridGenerated(true);
+    setSolved(true); // Mark as solved
+  };
 
-    if (result.length > 0) {
-      const solution = result[0]; // Take the first valid solution
-      const newGrid = Array(size * size).fill("");
-      solution.forEach((col, row) => {
-        newGrid[row * size + col] = "♛";
-      });
-      setGrid(newGrid);
-    }
+  const navigateSolution = (direction) => {
+    setCurrentSolutionIndex((prev) =>
+      direction === "next"
+        ? Math.min(prev + 1, solutions.length - 1)
+        : Math.max(prev - 1, 0)
+    );
   };
 
   return (
@@ -86,22 +81,46 @@ export default function Board() {
           className="input-box"
           maxLength="2"
         />
-        <div
-          className="grid"
-          style={{
-            gridTemplateColumns: `repeat(${size || 1}, 50px)`,
-            gridTemplateRows: `repeat(${size || 1}, 50px)`,
-          }}
-        >
-          {grid.map((value, index) => (
-            <div key={index} className="grid-cell">
-              {value}
-            </div>
-          ))}
-        </div>
         <button onClick={solveNQueens} className="solve-button">
           Solve
         </button>
+
+        {/* Grid appears instantly when entering a valid number */}
+        {gridGenerated && (
+          <div className="grid" style={{ gridTemplateColumns: `repeat(${size}, 50px)` }}>
+            {Array(size * size)
+              .fill("")
+              .map((_, index) => {
+                const row = Math.floor(index / size);
+                const col = index % size;
+                return (
+                  <div key={index} className="grid-cell">
+                    {solutions.length > 0 && solutions[currentSolutionIndex][row] === col ? "♛" : ""}
+                  </div>
+                );
+              })}
+          </div>
+        )}
+
+        {/* Show "No solution exists" only if Solve was clicked */}
+        {solved && solutions.length === 0 && (
+          <p className="no-solution-text">No solution exists.</p>
+        )}
+
+        {solutions.length > 1 && (
+          <div className="navigation">
+            <button onClick={() => navigateSolution("prev")} disabled={currentSolutionIndex === 0}>
+              {"<"}
+            </button>
+            <span className="solution-text">{`Solution ${currentSolutionIndex + 1} of ${solutions.length}`}</span>
+            <button
+              onClick={() => navigateSolution("next")}
+              disabled={currentSolutionIndex === solutions.length - 1}
+            >
+              {">"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
